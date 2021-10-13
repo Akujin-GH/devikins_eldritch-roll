@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(22, 21, 26);
+            font-family: Montserrat, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+        }
+        
+        button {
+            border: none;
+            margin: 0 auto;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(170, 51, 181);
+            border-radius: 0.5rem;
+            font-size: 24px;
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+            transition: all 0.3s ease 0s;
+        }
+
+        .iframeWrapper {
+            border: 2px solid rgb(170, 51, 181); 
+            overflow: hidden; 
+            margin: 15px auto; 
+            max-width: 375px;
+            height: 650px;
+            position: relative;
+        }
+
+        iframe {
+            border: 0px none;
+            height: 650px; 
+            margin-top: -60px; 
+            width: 100%;
+            display: none;
+            overflow: hidden; 
+        }
+
+        #qMark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 400px;
+        }
+
+        img {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Eldritch raffle winner is....</h1>
+    <button onclick="roll()">Roll</button>
+    <div id="output"></div>
+
+    <div class="iframeWrapper">
+        <iframe id="iframe" src=""></iframe>
+        <div id="qMark">?</div>
+        
+    </div>
+
+    <script>
+        function roll() {
+            const entries = [];
+            var iFrame = document.getElementById('iframe');
+
+            // first NFT serial number
+            const min = 313877;
+            // last NFT serial number
+            const max = 657618;
+
+            // populate entries list
+            for (let i = min; i <= max; ++i) {
+                entries.push(i);
+            }
+
+            // shuffle list so edge values have a fair chance
+            entries.sort(() => Math.random() - 0.5);
+
+            // pick arandom entry as winner
+            const winner = entries[Math.round(Math.random() * entries.length)];
+
+            // document.getElementById("output").innerHTML = '<h1>' + winner + '</h1';
+            
+            iFrame.src = 'https://klevernft.com/asset/'+winner;
+
+            var timeleft = 5;
+            var qMark = document.getElementById("qMark");
+            var downloadTimer = setInterval(function(){
+                timeleft--;
+                qMark.textContent = timeleft;
+                if(timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    qMark.style.display = "none";
+                    iFrame.style.display = "block";
+                }
+            },1000);
+        };
+    </script>
+</body>
+</html>
